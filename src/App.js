@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import MangaRow from './components/MangaRow.js'
 import $ from 'jquery'
-import { Navbar } from './components/Navbar.jsx'
+import Navbar from './components/Navbar.jsx'
 import { Search } from './components/Search.jsx'
 
 class App extends Component {
