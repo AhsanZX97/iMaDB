@@ -4,19 +4,46 @@ import MangaRow from './components/MangaRow.js'
 import $ from 'jquery'
 import Navbar from './components/Navbar.jsx'
 import { Search } from './components/Search.jsx'
+import { LoginModal, SignModal } from './components/Modals'
+
 
 class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      rows: []
+      rows: [],
+      username: "",
+      sign: false,
+      login: false
     }
 
     this.performSearch("full metal")
   }
 
+  onOpenModal = () => {
+    this.setState({ sign: true });
+  };
+
+  onOpenModalLogin = () => {
+    this.setState({ login: true });
+  };
+
+  onCloseModal = () => {
+    this.setState({ sign: false });
+  };
+
+  onCloseModalclose = () => {
+    this.setState({ login: false });
+  };
+
+  logOut = (e) => {
+    e.preventDefault()
+    localStorage.removeItem('usertoken')
+  } 
+
   performSearch(searchTerm) {
+    console.log(localStorage.usertoken);
     var search = searchTerm.split(' ').join('+');
     $.ajax({
       method: 'GET',
@@ -31,11 +58,11 @@ class App extends Component {
         var mangaRows = []
 
         results.forEach((manga) => {
-          const mangaRow = <MangaRow key={manga.id} manga={manga}/>
+          const mangaRow = <MangaRow key={manga.id} manga={manga} />
           mangaRows.push(mangaRow)
         })
 
-        this.setState({rows: mangaRows})
+        this.setState({ rows: mangaRows })
       },
       error: (xhr, status, err) => {
         console.error("Failed to fetch data")
@@ -50,15 +77,21 @@ class App extends Component {
   }
 
   render() {
+    const { login, sign } = this.state;
     return (
       <div>
 
-        <Navbar />
+        <Navbar 
+          onOpenModalLogin={this.onOpenModalLogin}
+          onOpenModal={this.onOpenModal}
+          logOut={this.logOut}
+        />
 
         <Search handleChange={this.searchChangeHandler.bind(this)} />
 
         {this.state.rows}
-
+        <LoginModal login={login} onClose={this.onCloseModalclose} />
+        <SignModal sign={sign} onClose={this.onCloseModal} />
       </div>
     );
   }

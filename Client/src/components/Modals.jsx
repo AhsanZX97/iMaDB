@@ -27,6 +27,13 @@ export const LoginModal = (props) => {
 }
 
 export const SignModal = props => {
+    this.state = {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: ''
+    }
+    
     return (
         
         <Modal open={props.sign} onClose={props.onClose}>
