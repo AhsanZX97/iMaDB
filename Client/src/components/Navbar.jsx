@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { LoginModal } from './loginModal'
-import { SignModal } from './signModal'
+import { LoginModal, SignModal } from './Modals'
 
 export default class Navbar extends Component {
 
