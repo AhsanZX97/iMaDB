@@ -5,7 +5,7 @@ import $ from 'jquery'
 import Navbar from './components/Navbar.jsx'
 import { Search } from './components/Search.jsx'
 import { LoginModal, SignModal } from './components/Modals'
-import { register } from './components/functions'
+import { register, login} from './components/functions'
 
 
 class App extends Component {
@@ -18,13 +18,17 @@ class App extends Component {
       login: false,
       registerUsername: '',
       registerEmail: '',
-      registerPassword: ''
+      registerPassword: '',
+      loginUsername: '',
+      loginPassword: '',
+      username: ''
     }
 
     this.performSearch("full metal")
 
     this.onChange = this.onChange.bind(this)
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this)
+    this.onLoginSubmit = this.onLoginSubmit.bind(this)
   }
 
   onOpenModal = () => {
@@ -36,17 +40,26 @@ class App extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ sign: false });
+    this.setState({
+      registerUsername: '',
+      registerEmail: '',
+      registerPassword: '',
+      sign: false
+    })
   };
 
   onCloseModalclose = () => {
-    this.setState({ login: false });
+    this.setState({ 
+      login: false ,
+      loginUsername: '',
+      loginPassword: ''
+    });
   };
 
-  logOut = (e) => {
-    e.preventDefault()
-    localStorage.removeItem('usertoken')
-  }
+  logOut = () => {
+    localStorage.removeItem("usertoken")
+    this.setState({ token: undefined})
+  };
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value })
@@ -63,6 +76,21 @@ class App extends Component {
 
     register(newUser).then(res => {
       this.onCloseModal()
+    })
+  }
+
+  onLoginSubmit(e) {
+    e.preventDefault()
+
+    const user = {
+      username: this.state.loginUsername,
+      password: this.state.loginPassword
+    }
+
+    login(user).then(res => {
+      if (res) {
+        this.onCloseModalclose()
+      }
     })
   }
 
@@ -109,12 +137,20 @@ class App extends Component {
           onOpenModalLogin={this.onOpenModalLogin}
           onOpenModal={this.onOpenModal}
           logOut={this.logOut}
+          token={localStorage.usertoken}
         />
 
         <Search handleChange={this.searchChangeHandler.bind(this)} />
 
         {this.state.rows}
-        <LoginModal login={login} onClose={this.onCloseModalclose} />
+        <LoginModal 
+          login={login} 
+          onClose={this.onCloseModalclose} 
+          onChange={this.onChange}
+          onLoginSubmit={this.onLoginSubmit}
+          loginUsername={this.state.loginUsername}
+          loginPassword={this.state.loginPassword}
+        />
         <SignModal
           sign={sign}
           onClose={this.onCloseModal}

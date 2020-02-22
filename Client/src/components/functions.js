@@ -6,7 +6,7 @@ export const register = newUser =>{
         email: newUser.email,
         password: newUser.password,
     }).then(res => {
-        console.log("Registered")
+        console.log(res)
     })
 }
 

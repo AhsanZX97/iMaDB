@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 export default class Navbar extends Component {
 
     render() {
-        
+
+        console.log(this.props.token)
 
         const notOnline = (
             <div>
@@ -39,7 +40,7 @@ export default class Navbar extends Component {
                             <td>
                                 <h1>MangaDB Search</h1>
                             </td>
-                            {localStorage.usertoken ? online : notOnline}
+                            {this.props.token ? online : notOnline}
                         </tr>
                     </tbody>
                 </table>
