@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const register = newUser =>{
-    return axios.post('users/register', {
+    return axios.post('functions/register', {
         username: newUser.username,
         email: newUser.email,
         password: newUser.password,
@@ -11,7 +11,7 @@ export const register = newUser =>{
 }
 
 export const login = user => {
-    return axios.post('users/login', {
+    return axios.post('functions/login', {
         username: user.username,
         password: user.password
     }).then(res => {

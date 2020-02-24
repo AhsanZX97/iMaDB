@@ -1,15 +1,17 @@
 const express = require('express')
-const users = express.Router()
+const routes = express.Router()
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/User')
-users.use(cors())
+const Mangas = require('../models/Mangas')
+User.hasMany(Mangas)
+routes.use(cors())
 
 process.env.SECRET_KEY = 'secret'
 
-users.post('/register', (req, res) => {
+routes.post('/register', (req, res) => {
     const today = new Date()
     console.log(req.body.email)
     const userData = {
@@ -43,7 +45,37 @@ users.post('/register', (req, res) => {
     })
 })
 
-users.post('/login', (req, res) => {
+routes.post('/add', (req, res) => {
+    console.log(req.body.manga_image_url)
+    const mangaData = {
+        manga_image_url: req.body.manga_image_url,
+        manga_title: req.body.manga_title,
+        manga_synopsis: req.body.manga_synopsis,
+        user_id: 4
+    }
+
+    Mangas.findOne({
+        where: {
+            manga_title: req.body.manga_title
+        }
+    }).then(manga => {
+        if (!manga) {
+            Mangas.create(mangaData)
+                .then(manga => {
+                    res.json({ status: manga.manga_title + ' Added!' })
+                })
+                .catch(err => {
+                    res.send('error: ' + err)
+                })
+        } else {
+            res.json({ error: 'Manga already added' })
+        }
+    }).catch(err => {
+        res.send('error: ' + err)
+    })
+})
+
+routes.post('/login', (req, res) => {
     User.findOne({
         where: {
             username: req.body.username
@@ -64,7 +96,7 @@ users.post('/login', (req, res) => {
     })
 })
 
-users.get('/profile', (req, res) => {
+routes.get('/profile', (req, res) => {
     var decoded = jwt.verify(req.headers['authorization'], process.env.SECRET_KEY)
 
     User.findOne({
@@ -82,4 +114,4 @@ users.get('/profile', (req, res) => {
     })
 })
 
-module.exports = users
+module.exports = routes
