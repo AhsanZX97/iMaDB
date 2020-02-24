@@ -16,6 +16,7 @@ export const login = user => {
         password: user.password
     }).then(res => {
         localStorage.setItem('usertoken', res.data)
+        localStorage.setItem('username', user.username)
         return res.data
     }).catch(err => {
         console.log(err)

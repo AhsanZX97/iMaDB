@@ -1,9 +1,8 @@
 import React from 'react'
 
 export default class MangaRow extends React.Component {
-  viewMovie() {
-    const url = "https://www.themoviedb.org/movie/" + this.props.manga.id
-    window.location.href = url
+  add() {
+    this.props.add();
   }
 
   render() {
@@ -16,7 +15,7 @@ export default class MangaRow extends React.Component {
         <td>
           <h3>{this.props.manga.title}</h3>
           <p>{this.props.manga.synopsis}</p>
-          <input type="button" onClick={this.viewMovie.bind(this)} value="View"/>
+          <input type="button" onClick={this.add} value="Add"/>
         </td>
       </tr>
     </tbody>

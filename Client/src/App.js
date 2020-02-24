@@ -21,7 +21,7 @@ class App extends Component {
       registerPassword: '',
       loginUsername: '',
       loginPassword: '',
-      username: ''
+      disabled: false
     }
 
     this.performSearch("full metal")
@@ -56,8 +56,18 @@ class App extends Component {
     });
   };
 
+  onUserClick = (e) => {
+    e.preventDefault()
+    this.setState({
+      disabled: true,
+      rows:[]
+    })
+    console.log(this.state.disabled)
+  }
+
   logOut = () => {
     localStorage.removeItem("usertoken")
+    localStorage.removeItem("username")
     this.setState({ token: undefined})
   };
 
@@ -95,7 +105,6 @@ class App extends Component {
   }
 
   performSearch(searchTerm) {
-    console.log(localStorage.usertoken);
     var search = searchTerm.split(' ').join('+');
     $.ajax({
       method: 'GET',
@@ -138,9 +147,13 @@ class App extends Component {
           onOpenModal={this.onOpenModal}
           logOut={this.logOut}
           token={localStorage.usertoken}
+          onUserClick={this.onUserClick}
         />
 
-        <Search handleChange={this.searchChangeHandler.bind(this)} />
+        <Search 
+          handleChange={this.searchChangeHandler.bind(this)} 
+          disabled={this.state.disabled}
+        />
 
         {this.state.rows}
         <LoginModal 
