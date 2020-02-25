@@ -24,21 +24,24 @@ class App extends Component {
       disabled: false
     }
 
-    this.performSearch("full metal")
+    this.performSearch("pokemon")
 
     this.onChange = this.onChange.bind(this)
     this.onRegisterSubmit = this.onRegisterSubmit.bind(this)
     this.onLoginSubmit = this.onLoginSubmit.bind(this)
   }
 
+  // open the sign up form
   onOpenModal = () => {
     this.setState({ sign: true });
   };
 
+  // open the login form
   onOpenModalLogin = () => {
     this.setState({ login: true });
   };
 
+  // clear sign form and close it
   onCloseModal = () => {
     this.setState({
       registerUsername: '',
@@ -48,6 +51,7 @@ class App extends Component {
     })
   };
 
+  // clear login form and close it
   onCloseModalclose = () => {
     this.setState({ 
       login: false ,
@@ -56,6 +60,7 @@ class App extends Component {
     });
   };
 
+  // change layout 
   onUserClick = (e) => {
     e.preventDefault()
     this.setState({
