@@ -1,12 +1,13 @@
 # iMaDB
 
-Internet Manga Database using Manga Eden API
+Internet Manga Database using RapidAPI
 
 ## Technology Used
 
 - Html
 - Css
 - JavaScript
-- Materialize CSS
+- Bootstrap
 - ReactJS
 - ExpressJS
+- SQL
